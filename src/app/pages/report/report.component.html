@@ -1,0 +1,12 @@
+<h2>สรุปยอดขาย</h2>
+<label>เลือกช่วงเวลา:
+  <select [(ngModel)]="period">
+    <option value="day">รายวัน</option>
+    <option value="month">รายเดือน</option>
+  </select>
+</label>
+<ul>
+  <li *ngFor="let summary of salesSummary">
+    {{summary.date}}: {{summary.total}} บาท
+  </li>
+</ul>

@@ -1,0 +1,10 @@
+<h2>ใบเสร็จ</h2>
+<ul>
+  <li *ngFor="let item of orderItems">
+    {{item.product}} - {{item.quantity}} x {{item.price}} บาท = {{item.quantity * item.price}} บาท
+  </li>
+</ul>
+<p>รวมทั้งหมด: {{total}} บาท</p>
+<p>รับเงิน: {{received}} บาท</p>
+<p>เงินทอน: {{change}} บาท</p>
+<button routerLink="/order">เริ่มออเดอร์ใหม่</button>

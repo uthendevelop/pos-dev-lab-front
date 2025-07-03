@@ -1,0 +1,78 @@
+<h2 style="margin-bottom: 24px;">คิดเงิน</h2>
+<div style="display: flex; gap: 32px; align-items: flex-start;">
+  <!-- ซ้าย: ประเภทการรับเงินและธนบัตร -->
+  <div style="flex: 1; min-width: 260px; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 20px;">
+    <div style="margin-bottom: 20px; display: flex; gap: 12px;">
+      <button (click)="paymentType = 'cash'" [ngClass]="{'active-pay': paymentType === 'cash'}" style="flex:1; padding: 10px 0; border-radius: 6px; border: none; font-weight: bold; font-size: 1.1em; background: #f5f5f5; color: #232946; cursor: pointer; transition: background .2s;">เงินสด</button>
+      <button (click)="paymentType = 'transfer'" [ngClass]="{'active-pay': paymentType === 'transfer'}" style="flex:1; padding: 10px 0; border-radius: 6px; border: none; font-weight: bold; font-size: 1.1em; background: #f5f5f5; color: #232946; cursor: pointer; transition: background .2s;">โอน</button>
+    </div>
+    <!-- เงินสด -->
+    <div *ngIf="paymentType === 'cash'">
+      <div style="font-weight: bold; margin-bottom: 8px;">เลือกธนบัตร/เหรียญที่รับ:</div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 16px;">
+        <button *ngFor="let note of cashOptions" (click)="addCash(note)" [ngStyle]="getCashStyle(note)" style="padding: 18px 0; font-size: 1.1em; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: background .2s;">
+          {{note | number}} ฿
+        </button>
+      </div>
+      <div style="margin-bottom: 8px;">รับเงินแล้ว: <b>{{received | number}} ฿</b></div>
+      <div *ngIf="change !== null" style="margin-top: 12px; font-weight: bold; color: #009688; margin-bottom: 20px;">เงินทอน: {{change | number}} ฿</div>
+      <button (click)="calculateChange()" [disabled]="received < total" *ngIf="!showReceiptBtn" style="width: 100%; background: #2196f3; color: #fff; border: none; border-radius: 6px; padding: 10px; font-size: 1.1em; cursor: pointer;">คิดเงิน</button>
+      <button (click)="openReceiptModal()" *ngIf="showReceiptBtn" style="width: 100%; background: #43a047; color: #fff; border: none; border-radius: 6px; padding: 10px; font-size: 1.1em; cursor: pointer;">ออกใบเสร็จ</button>
+    </div>
+    <!-- โอน -->
+    <div *ngIf="paymentType === 'transfer'">
+      <div style="font-weight: bold; margin-bottom: 8px;">เลขบัญชี: <span style="color: #2196f3;">123-4-56789-0</span></div>
+      <div style="margin-bottom: 12px;">ชื่อบัญชี: <span style="color: #232946;">ร้านคาเฟ่ POS</span></div>
+      <div style="text-align: center;">
+        <img src="https://promptpay.io/1234567890123.png" alt="QR Code" style="width: 180px; height: 180px; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001;">
+      </div>
+      <button (click)="openReceiptModal()" style="width: 100%; margin-top: 18px; background: #43a047; color: #fff; border: none; border-radius: 6px; padding: 10px; font-size: 1.1em; cursor: pointer;">ออกใบเสร็จ</button>
+    </div>
+    <style>
+      .active-pay {
+        background: #2196f3 !important;
+        color: #fff !important;
+      }
+    </style>
+  </div>
+
+  <!-- ขวา: รายละเอียดออเดอร์ -->
+  <div style="flex: 1.2; min-width: 320px; background: #fff; border-radius: 12px; box-shadow: 0 2px 8px #0001; padding: 24px;">
+    <ul style="list-style: none; padding: 0; margin: 0 0 16px 0;">
+      <li *ngFor="let item of orderItems" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span>{{item.name}} x{{item.qty}}</span>
+        <span>{{item.price * item.qty | number}} ฿</span>
+      </li>
+    </ul>
+    <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; margin-bottom: 24px;">
+      <span>รวมทั้งหมด</span>
+      <span>{{total | number}} ฿</span>
+    </div>
+  </div>
+
+  <!-- Modal ใบเสร็จ -->
+  <div *ngIf="showReceiptModal" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0008; display: flex; align-items: center; justify-content: center; z-index: 1000;">
+    <div style="background: #fff; border-radius: 16px; padding: 32px 32px 24px 32px; min-width: 340px; max-width: 95vw; box-shadow: 0 4px 24px #0003; position: relative;">
+      <h3 style="margin-top: 0;">ใบเสร็จ</h3>
+      <ul style="list-style: none; padding: 0; margin: 0 0 16px 0;">
+        <li *ngFor="let item of orderItems" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+          <span>{{item.name}} x{{item.qty}}</span>
+          <span>{{item.price * item.qty | number}} ฿</span>
+        </li>
+      </ul>
+      <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1em; margin-bottom: 8px;">
+        <span>รวมทั้งหมด</span>
+        <span>{{total | number}} ฿</span>
+      </div>
+      <div *ngIf="paymentType === 'cash'">
+        <div>รับเงิน: {{received | number}} ฿</div>
+        <div>เงินทอน: {{change | number}} ฿</div>
+      </div>
+      <div *ngIf="paymentType === 'transfer'">
+        <div>โอนเงิน: {{total | number}} ฿</div>
+      </div>
+      <button (click)="closeReceiptModal()" style="margin-top: 18px; width: 100%; background: #232946; color: #fff; border: none; border-radius: 6px; padding: 10px; font-size: 1.1em; cursor: pointer;">ปิด</button>
+      <button (click)="startNewOrder()" style="margin-top: 10px; width: 100%; background: #2196f3; color: #fff; border: none; border-radius: 6px; padding: 10px; font-size: 1.1em; cursor: pointer;">เริ่มออเดอร์ใหม่</button>
+    </div>
+  </div>
+</div>

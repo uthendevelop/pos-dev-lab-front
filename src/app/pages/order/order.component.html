@@ -1,8 +1,8 @@
 <h2 style="margin-bottom: 24px;">รับออเดอร์</h2>
-<div style="display: flex; gap: 32px; align-items: flex-start;">
+<div style="display: flex; gap: 32px; align-items: flex-start; height: 83vh;">
   <!-- สินค้า (Grid) -->
-  <div style="flex-basis: 70%; max-width: 70%; overflow-x: auto; max-height: 650px;">
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+  <div style="flex-basis: 70%; max-width: 70%;">
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; overflow-y: auto; max-height: 80vh;">
       <div *ngFor="let product of products" (click)="addToCart(product)" style="cursor: pointer; border: 1px solid #eee; border-radius: 12px; padding: 12px; text-align: center; background: #fff; transition: box-shadow .2s; box-shadow: 0 2px 8px #0001;">
         <img [src]="product.image" alt="{{product.name}}" style="width: 120px; height: 120px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; background: #f5f5f5;">
         <div style="font-weight: bold; font-size: 1.1em; margin-bottom: 2px;">{{product.name}}</div>

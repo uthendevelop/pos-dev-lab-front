@@ -2,6 +2,22 @@
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
 
+## GitHub Pages Deployment
+
+This application is automatically deployed to GitHub Pages when changes are pushed to the main branch.
+
+**Live URL**: https://uthendevelop.github.io/pos-dev-lab-front/
+
+### Manual Deployment
+
+To build for GitHub Pages manually:
+
+```bash
+npm run build:github-pages
+```
+
+This will build the application with the correct base href for GitHub Pages deployment.
+
 ## Development server
 
 To start a local development server, run:

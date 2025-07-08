@@ -1,6 +1,10 @@
-# App
+# POS Dev Lab Front
 
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.15.
+
+## 🚀 Live Demo
+
+The application is deployed on GitHub Pages: **[https://uthendevelop.github.io/pos-dev-lab-front/](https://uthendevelop.github.io/pos-dev-lab-front/)**
 
 ## Development server
 
